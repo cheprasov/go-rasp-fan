@@ -156,12 +156,14 @@ func pidSaver(once bool) {
         if isFileExists(pidFile) {
             content, err := readFileContent(pidFile)
             if err != nil {
+                fmt.Println(err)
                 time.Sleep(500 * time.Millisecond);
                 continue;
             }
 
             if content != "" {
                 data := strings.Split(content, ":");
+                fmt.Println(data)
                 if len(data) == 2 && pid != data[0] {
                     lastTime, _ := strconv.ParseInt(data[1], 10, 64);
                     if now - lastTime < 6000 {
@@ -185,6 +187,8 @@ func pidSaver(once bool) {
         if once {
             break;
         }
+
+        os.Exit(0);
     }
 }
 
