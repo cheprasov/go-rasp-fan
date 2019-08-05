@@ -163,10 +163,9 @@ func pidSaver(once bool) {
 
             if content != "" {
                 data := strings.Split(content, ":");
-                fmt.Println(data)
                 if len(data) == 2 && pid != data[1] {
                     lastTime, _ := strconv.ParseInt(data[0], 10, 64);
-                    if now - lastTime < 6000 {
+                    if now - lastTime < 6 {
                         os.Exit(0);
                         return;
                     }
@@ -181,7 +180,6 @@ func pidSaver(once bool) {
             time.Sleep(500 * time.Millisecond)
             continue;
         }
-        fmt.Println("Saved pid:", strValue);
         time.Sleep(5000 * time.Millisecond);
 
         if once {
