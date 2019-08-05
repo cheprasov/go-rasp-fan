@@ -17,11 +17,11 @@ const GPIOpin = 18
 
 func main() {
 
-    out, err := exec.Command("ls", "-la", "/Users/cheprasov/Projects/git/").Output()
+    out, err := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp").Output()
     if err != nil {
         log.Fatal(err)
     }
-    fmt.Printf("The date is %s\n", out)
+    fmt.Printf(out)
 
     return;
     //// Open and map memory to access gpio, check for errors
