@@ -99,12 +99,12 @@ func controlFan(t int) error {
 
             if cfg.workMs > 0 {
                 runFan();
-                time.Sleep(time.Duration(cfg.workMs));
+                time.Sleep(time.Duration(cfg.workMs) * time.Millisecond);
             }
 
             if cfg.sleepMs > 0 {
                 stopFan();
-                time.Sleep(time.Duration(cfg.sleepMs));
+                time.Sleep(time.Duration(cfg.sleepMs) * time.Millisecond);
             }
 
             return nil;
@@ -151,7 +151,7 @@ func pidSaver(once bool) {
         if isFileExists(pidFile) {
             content, err := readFileContent(pidFile)
             if err != nil {
-                time.Sleep(500);
+                time.Sleep(500 * time.Millisecond);
                 continue;
             }
 
@@ -171,11 +171,11 @@ func pidSaver(once bool) {
 
         err := ioutil.WriteFile(pidFile, []byte(strValue), 0644)
         if err != nil {
-            time.Sleep(200)
+            time.Sleep(500 * time.Millisecond)
             continue;
         }
         fmt.Println("Saved pid:", strValue);
-        time.Sleep(5000);
+        time.Sleep(5000 * time.Millisecond);
 
         if once {
             break;
