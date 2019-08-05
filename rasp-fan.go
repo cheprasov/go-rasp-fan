@@ -44,7 +44,7 @@ var tempConfigs = []TempConfig{
     {
         temperature: 35,
         workMs:      0,
-        sleepMs:     2000,
+        sleepMs:     3000,
     },
 }
 
@@ -56,7 +56,7 @@ func temp() ([]byte, error) {
 }
 
 func getTemperature() (int, error) {
-    out, err := temp() //exec.Command("/opt/vc/bin/vcgencmd", "measure_temp").Output()
+    out, err := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp").Output()
     if err != nil {
         return 0, err;
     }
@@ -101,6 +101,7 @@ func controlFan(t int) error {
                 runFan();
                 time.Sleep(time.Duration(cfg.workMs));
             }
+
             if cfg.sleepMs > 0 {
                 stopFan();
                 time.Sleep(time.Duration(cfg.sleepMs));
@@ -173,6 +174,7 @@ func pidSaver(once bool) {
             time.Sleep(200)
             continue;
         }
+        fmt.Println("Saved pid:", strValue);
         time.Sleep(5000);
 
         if once {
