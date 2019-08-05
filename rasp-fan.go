@@ -46,6 +46,11 @@ var tempConfigs = []TempConfig{
         workMs:      0,
         sleepMs:     3000,
     },
+    {
+        temperature: 20,
+        workMs:      0,
+        sleepMs:     5000,
+    },
 }
 
 // temp=35.0'C
@@ -95,7 +100,7 @@ func controlFan(t int) error {
 
     for _, cfg := range tempConfigs {
         if t >= cfg.temperature {
-            fmt.Println("temp=", t, cfg);
+            fmt.Println("temp:", t, cfg);
 
             if cfg.workMs > 0 {
                 runFan();
@@ -111,7 +116,7 @@ func controlFan(t int) error {
         }
     }
 
-    return errors.New("can find rule")
+    return errors.New("can't find a temp config")
 }
 
 var pidFile string;
