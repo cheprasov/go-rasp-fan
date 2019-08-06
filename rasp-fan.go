@@ -13,6 +13,7 @@ import (
     "strconv"
     "strings"
     "time"
+    gpio "github.com/warthog618/gpio"
 )
 
 // Use pin 18, corresponds to physical pin 12 on the pi
@@ -79,7 +80,7 @@ func getTemperature() (int, error) {
     return intValue, nil;
 }
 
-var pin = rpio.Pin(GPIOpin)
+var pin *gpio.Pin
 
 func runFan() {
     pin.High()
@@ -200,6 +201,7 @@ func main() {
     }
     // Unmap gpio memory when done
     defer rpio.Close()
+    pin = gpio.NewPin(gpio.GPIO18);
 
     for {
         t, err := getTemperature();
