@@ -1,16 +1,16 @@
 package fan
 
 import (
+    "../config"
+    "../temp"
     "errors"
     "fmt"
-    "go-rasp-fan/cmd/config"
-    "go-rasp-fan/cmd/temp"
-    "time"
     gpio "github.com/stianeikeland/go-rpio"
+    "time"
 )
 
 type FanManager struct {
-    pin gpio.Pin
+    pin      gpio.Pin
     fanRules []config.FanRule
 }
 
@@ -20,7 +20,7 @@ func CreateFanManager(pinId int, fanRules []config.FanRule) (*FanManager, error)
     }
 
     fm := FanManager{
-        pin: gpio.Pin(pinId),
+        pin:      gpio.Pin(pinId),
         fanRules: fanRules,
     }
     fm.pin.Output()

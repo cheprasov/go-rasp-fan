@@ -1,9 +1,9 @@
 package main
 
 import (
+    "./cmd/config"
+    "./cmd/fan"
     "flag"
-    "go-rasp-fan/cmd/config"
-    "go-rasp-fan/cmd/fan"
     "io/ioutil"
     "log"
 )
