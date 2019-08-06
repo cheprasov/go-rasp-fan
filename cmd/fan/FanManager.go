@@ -6,23 +6,22 @@ import (
     "errors"
     "fmt"
     "github.com/warthog618/gpio"
-    //gpio "github.com/stianeikeland/go-rpio"
     "time"
 )
 
 type FanManager struct {
-    pin      *gpio.Pin
-    fanRules []config.FanRule
+    pin            *gpio.Pin
+    fanRules       []config.FanRule
 }
 
-func CreateFanManager(pinId int, fanRules []config.FanRule) (*FanManager, error) {
+func CreateFanManager(GPIOPin uint8, fanRules []config.FanRule) (*FanManager, error) {
     if err := gpio.Open(); err != nil {
         return nil, err
     }
 
     fm := FanManager{
-        pin:      gpio.NewPin(gpio.GPIO18),
-        fanRules: fanRules,
+        pin:            gpio.NewPin(GPIOPin),
+        fanRules:       fanRules,
     }
     fm.pin.Output()
 
@@ -35,8 +34,10 @@ func (fm *FanManager) Close() error {
 }
 
 func (fm *FanManager) Run() {
+    var t int
+    var err error
     for {
-        t, err := temp.GetTemperature()
+        t, err = temp.GetTemperature()
         if err != nil || t == 0 {
             fm.runFan()
             time.Sleep(5 * time.Second)
@@ -71,14 +72,23 @@ func (fm *FanManager) processTemp(t int) error {
     for _, rule := range fm.fanRules {
         if t >= rule.Temp {
             fmt.Println("temp:", t, rule)
-            if rule.WorkMs > 0 {
-                fm.runFan()
-                time.Sleep(time.Duration(rule.WorkMs) * time.Millisecond)
+
+            repeat := rule.Repeat
+            if repeat < 1 {
+                repeat = 1;
             }
 
-            if rule.SleepMs > 0 {
-                fm.stopFan()
-                time.Sleep(time.Duration(rule.SleepMs) * time.Millisecond)
+            for repeat > 0 {
+                if rule.RunMs > 0 {
+                    fm.runFan()
+                    time.Sleep(time.Duration(rule.RunMs) * time.Millisecond)
+                }
+
+                if rule.SleepMs > 0 {
+                    fm.stopFan()
+                    time.Sleep(time.Duration(rule.SleepMs) * time.Millisecond)
+                }
+                repeat--
             }
 
             return nil

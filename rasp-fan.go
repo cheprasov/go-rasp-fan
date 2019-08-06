@@ -35,11 +35,10 @@ func readFileContent(filename string) (string, error) {
 }
 
 func main() {
-    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.FanRules)
+    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.FanRules, cfg.UpdateTempIntervalMs)
     if err != nil {
         log.Fatal(err);
     }
     defer fanManager.Close()
-
     fanManager.Run();
 }

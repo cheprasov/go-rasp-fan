@@ -6,23 +6,21 @@ import (
 )
 
 type FanRule struct {
-    Temp    int `json:"temp"`
-    WorkMs  int `json:"workMs"`
-    SleepMs int `json:"sleepMs"`
-    Repeat  int `json:"repeat"`
+    Temp    int    `json:"temp"`
+    RunMs   int    `json:"runMs"`
+    SleepMs int    `json:"sleepMs"`
+    Repeat  int    `json:"repeat"`
 }
 
 type Config struct {
-    GPIOPin              int       `json:"GPIOPin"`
+    GPIOPin              uint8     `json:"GPIOPin"`
     ShutdownTemp         int       `json:"shutdownTemp"`
-    UpdateTempIntervalMs int       `json:"updateTempIntervalMs"`
     PidIntervalMs        int       `json:"pidIntervalMs"`
     FanRules             []FanRule `json:"fanRules"`
 }
 
 func ReadConfig(filename string) (Config, error) {
     var config Config;
-
     jsonData, err := ioutil.ReadFile(filename)
     if err != nil {
         return config, err;
