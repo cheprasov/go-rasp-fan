@@ -5,12 +5,13 @@ import (
     "../temp"
     "errors"
     "fmt"
-    gpio "github.com/stianeikeland/go-rpio"
+    "github.com/warthog618/gpio"
+    //gpio "github.com/stianeikeland/go-rpio"
     "time"
 )
 
 type FanManager struct {
-    pin      gpio.Pin
+    pin      *gpio.Pin
     fanRules []config.FanRule
 }
 
@@ -20,7 +21,7 @@ func CreateFanManager(pinId int, fanRules []config.FanRule) (*FanManager, error)
     }
 
     fm := FanManager{
-        pin:      gpio.Pin(pinId),
+        pin:      gpio.NewPin(gpio.GPIO18),
         fanRules: fanRules,
     }
     fm.pin.Output()
