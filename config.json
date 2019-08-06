@@ -1,0 +1,33 @@
+{
+  "GPIOPin": 18,
+  "shutdownTemp": 70,
+  "updateTempIntervalMs": 2000,
+  "pidIntervalMs": 5000,
+  "fanRules": [
+    {
+      "temp": 50,
+      "workMs": 10000,
+      "sleepMs": 0
+    },
+    {
+      "temp": 40,
+      "workMs": 6000,
+      "sleepMs": 1000
+    },
+    {
+      "temp": 37,
+      "workMs": 2000,
+      "sleepMs": 1000
+    },
+    {
+      "temp": 35,
+      "workMs": 0,
+      "sleepMs": 3000
+    },
+    {
+      "temp": 20,
+      "workMs": 0,
+      "sleepMs": 5000
+    }
+  ]
+}
