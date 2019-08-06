@@ -35,7 +35,7 @@ func readFileContent(filename string) (string, error) {
 }
 
 func main() {
-    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.FanRules)
+    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.FanRules, cfg.RunTemp, cfg.StopTemp)
     if err != nil {
         log.Fatal(err);
     }

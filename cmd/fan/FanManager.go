@@ -10,18 +10,22 @@ import (
 )
 
 type FanManager struct {
-    pin            *gpio.Pin
-    fanRules       []config.FanRule
+    pin      *gpio.Pin
+    fanRules []config.FanRule
+    runTemp  int
+    stopTemp int
 }
 
-func CreateFanManager(GPIOPin uint8, fanRules []config.FanRule) (*FanManager, error) {
+func CreateFanManager(GPIOPin uint8, fanRules []config.FanRule, runTemp, stopTemp int) (*FanManager, error) {
     if err := gpio.Open(); err != nil {
         return nil, err
     }
 
     fm := FanManager{
-        pin:            gpio.NewPin(GPIOPin),
-        fanRules:       fanRules,
+        pin:      gpio.NewPin(GPIOPin),
+        fanRules: fanRules,
+        runTemp:  runTemp,
+        stopTemp: stopTemp,
     }
     fm.pin.Output()
 
@@ -43,6 +47,7 @@ func (fm *FanManager) Run() {
             time.Sleep(5 * time.Second)
             continue
         }
+
         err = fm.processTemp(t)
         if err != nil {
             fm.runFan()
@@ -63,6 +68,18 @@ func (fm *FanManager) stopFan() {
 func (fm *FanManager) processTemp(t int) error {
     if t < 5 {
         return errors.New("strange low temperature")
+    }
+
+    if fm.runTemp > 0 && fm.stopTemp > 0 {
+        if t >= fm.runTemp {
+            fm.runFan();
+            fmt.Println("temp: ", t, "start fun on", fm.runTemp)
+        } else if t <= fm.stopTemp {
+            fm.stopFan();
+            fmt.Println("temp: ", t, "stop fun on", fm.stopTemp)
+        }
+        time.Sleep(1000 * time.Millisecond)
+        return nil;
     }
 
     if len(fm.fanRules) == 0 {

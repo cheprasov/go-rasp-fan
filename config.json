@@ -2,6 +2,8 @@
   "GPIOPin": 18,
   "shutdownTemp": 70,
   "pidIntervalMs": 5000,
+  "runTemp": 48,
+  "stopTemp": 36,
   "fanRules": [
     {
       "temp": 50,

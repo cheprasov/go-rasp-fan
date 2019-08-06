@@ -6,17 +6,19 @@ import (
 )
 
 type FanRule struct {
-    Temp    int    `json:"temp"`
-    RunMs   int    `json:"runMs"`
-    SleepMs int    `json:"sleepMs"`
-    Repeat  int    `json:"repeat"`
+    Temp    int `json:"temp"`
+    RunMs   int `json:"runMs"`
+    SleepMs int `json:"sleepMs"`
+    Repeat  int `json:"repeat"`
 }
 
 type Config struct {
-    GPIOPin              uint8     `json:"GPIOPin"`
-    ShutdownTemp         int       `json:"shutdownTemp"`
-    PidIntervalMs        int       `json:"pidIntervalMs"`
-    FanRules             []FanRule `json:"fanRules"`
+    GPIOPin       uint8     `json:"GPIOPin"`
+    ShutdownTemp  int       `json:"shutdownTemp"`
+    PidIntervalMs int       `json:"pidIntervalMs"`
+    RunTemp       int       `json:"runTemp"`
+    StopTemp      int       `json:"stopTemp"`
+    FanRules      []FanRule `json:"fanRules"`
 }
 
 func ReadConfig(filename string) (Config, error) {
