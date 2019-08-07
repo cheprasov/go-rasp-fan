@@ -2,31 +2,6 @@
   "GPIOPin": 18,
   "shutdownTemp": 70,
   "pidIntervalMs": 5000,
-  "runTemp": 48,
-  "stopTemp": 36,
-  "fanRules": [
-    {
-      "temp": 50,
-      "runMs": 10000
-    },
-    {
-      "temp": 40,
-      "runMs": 5000
-    },
-    {
-      "temp": 37,
-      "runMs": 800,
-      "sleepMs": 400,
-      "repeat": 5
-    },
-    {
-      "temp": 35,
-      "sleepMs": 1000
-    },
-    {
-      "temp": 20,
-      "runMs": 0,
-      "sleepMs": 5000
-    }
-  ]
+  "runTemp": 50,
+  "stopTemp": 36
 }

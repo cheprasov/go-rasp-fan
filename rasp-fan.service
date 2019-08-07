@@ -1,0 +1,13 @@
+[Unit]
+Description=RPi4 Fan Controller
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/path/to/app
+
+[Install]
+WantedBy=multi-user.target

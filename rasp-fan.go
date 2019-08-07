@@ -4,7 +4,6 @@ import (
     "./cmd/config"
     "./cmd/fan"
     "flag"
-    "io/ioutil"
     "log"
 )
 
@@ -12,14 +11,14 @@ import (
 var cfg config.Config;
 
 func init() {
-    pidFilePointer := flag.String("pid", "", "Path to pid-file")
+    //pidFilePointer := flag.String("pid", "", "Path to pid-file")
     configFilePointer := flag.String("config", "", "Path to config.json file")
     flag.Parse()
-    if *pidFilePointer == "" {
-        println("Please provide all params for the script:")
-        flag.PrintDefaults()
-        log.Fatal()
-    }
+    //if *pidFilePointer == "" {
+    //    println("Please provide all params for the script:")
+    //    flag.PrintDefaults()
+    //    log.Fatal()
+    //}
 
     var err error;
     //pidFile = *pidFilePointer
@@ -27,11 +26,6 @@ func init() {
     if err != nil {
         log.Fatal(err)
     }
-}
-
-func readFileContent(filename string) (string, error) {
-    content, err := ioutil.ReadFile(filename)
-    return string(content), err
 }
 
 func main() {

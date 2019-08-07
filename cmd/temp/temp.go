@@ -7,7 +7,6 @@ import (
     "strconv"
 )
 
-// temp=35.0'C
 var regExpTemp = regexp.MustCompile(`temp\s*=\s*(\d+)(?:[,.]\d+)?`)
 
 func GetTemperature() (int, error) {
