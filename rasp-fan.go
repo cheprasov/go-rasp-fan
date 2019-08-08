@@ -18,6 +18,7 @@ const (
     DefaultGPIOPin      = 18
     DefaultRunFanTemp   = 50
     DefaultStopFanTemp  = 36
+    DefaultWatchMs      = 1000
 )
 
 func init() {
@@ -42,6 +43,11 @@ func init() {
     if cfg.ShutdownTemp == 0 {
         cfg.ShutdownTemp = DefaultShutdownTemp
     }
+    if cfg.WatchMs == 0 {
+        cfg.WatchMs = DefaultWatchMs
+    }
+
+    fmt.Println(cfg);
 }
 
 func shutdownNow() {
