@@ -80,5 +80,7 @@ func main() {
             time.Sleep(time.Duration(cfg.WatchMs) * time.Millisecond)
             continue
         }
+
+        time.Sleep(time.Duration(cfg.WatchMs) * time.Millisecond)
     }
 }
