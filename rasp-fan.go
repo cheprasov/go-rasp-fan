@@ -4,35 +4,81 @@ import (
     "./cmd/config"
     "./cmd/fan"
     "flag"
+    "fmt"
+    "go-rasp-fan/cmd/temp"
     "log"
+    "os/exec"
+    "time"
 )
 
-//var pidFile string
 var cfg config.Config;
 
+const (
+    DefaultShutdownTemp = 70
+    DefaultGPIOPin      = 18
+    DefaultRunFanTemp   = 50
+    DefaultStopFanTemp  = 36
+)
+
 func init() {
-    //pidFilePointer := flag.String("pid", "", "Path to pid-file")
     configFilePointer := flag.String("config", "", "Path to config.json file")
     flag.Parse()
-    //if *pidFilePointer == "" {
-    //    println("Please provide all params for the script:")
-    //    flag.PrintDefaults()
-    //    log.Fatal()
-    //}
 
     var err error;
-    //pidFile = *pidFilePointer
     cfg, err = config.ReadConfig(*configFilePointer)
     if err != nil {
-        log.Fatal(err)
+        fmt.Println(err)
+    }
+
+    if cfg.GPIOPin == 0 {
+        cfg.GPIOPin = DefaultGPIOPin
+    }
+    if cfg.RunFanTemp == 0 {
+        cfg.RunFanTemp = DefaultRunFanTemp
+    }
+    if cfg.StopFanTemp == 0 {
+        cfg.StopFanTemp = DefaultStopFanTemp
+    }
+    if cfg.ShutdownTemp == 0 {
+        cfg.ShutdownTemp = DefaultShutdownTemp
     }
 }
 
+func shutdownNow() {
+    output, err := exec.Command("shutdown", "now").Output()
+    if err != nil {
+        log.Println(err)
+    }
+    fmt.Println(string(output))
+}
+
 func main() {
-    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.FanRules, cfg.RunTemp, cfg.StopTemp)
+    fanManager, err := fan.CreateFanManager(cfg.GPIOPin, cfg.RunFanTemp, cfg.StopFanTemp)
     if err != nil {
         log.Fatal(err);
     }
     defer fanManager.Close()
-    fanManager.Run();
+
+    for {
+        t, err := temp.GetTemperature()
+
+        if t >= cfg.ShutdownTemp {
+            shutdownNow();
+        }
+
+        if err != nil || t == 0 {
+            // Can't get temp
+            fanManager.RunFan()
+            time.Sleep(time.Duration(cfg.WatchMs) * time.Millisecond)
+            continue
+        }
+
+        err = fanManager.ProcessTemp(t)
+        if err != nil {
+            // Can't process temp
+            fanManager.RunFan();
+            time.Sleep(time.Duration(cfg.WatchMs) * time.Millisecond)
+            continue
+        }
+    }
 }

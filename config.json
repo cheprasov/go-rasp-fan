@@ -1,7 +1,7 @@
 {
   "GPIOPin": 18,
   "shutdownTemp": 70,
-  "pidIntervalMs": 5000,
-  "runTemp": 50,
-  "stopTemp": 36
+  "runFanTemp": 50,
+  "stopFanTemp": 36,
+  "watchMs": 1000
 }
