@@ -3,9 +3,9 @@ package main
 import (
     "./cmd/config"
     "./cmd/fan"
+    "./cmd/temp"
     "flag"
     "fmt"
-    "go-rasp-fan/cmd/temp"
     "log"
     "os/exec"
     "time"
